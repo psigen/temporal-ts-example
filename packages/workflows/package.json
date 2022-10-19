@@ -1,0 +1,14 @@
+{
+  "name": "@example/workflows",
+  "private": true,
+  "source": "src/index.ts",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "@example/activities": "workspace:*",
+    "@temporalio/activity": "^1.3.0",
+    "@temporalio/workflow": "^1.3.0"
+  }
+}

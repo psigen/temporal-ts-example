@@ -1,0 +1,12 @@
+{
+  "name": "@example/activities",
+  "private": true,
+  "source": "src/index.ts",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
+}

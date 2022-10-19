@@ -1,0 +1,32 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "version": "4.4.2",
+  "compilerOptions": {
+    "lib": ["es2017"],
+    "composite": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@example/activities*": ["packages/activities/src*"]
+    }
+  },
+  "references": [
+    {
+      "path": "packages/activities/tsconfig.json"
+    },
+    {
+      "path": "packages/workflows/tsconfig.json"
+    },
+    {
+      "path": "packages/worker/tsconfig.json"
+    }
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "lib",
+    "__tests__",
+    "**/*.test*",
+    "**/*.spec*"
+  ]
+}

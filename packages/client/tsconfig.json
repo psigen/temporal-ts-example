@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "paths": {
+      "@example/workflows*": ["../workflows/src*"]
+    }
+  },
+  "references": [
+    { "path": "../workflows/tsconfig.json" },
+  ],
+  "include": ["src"]
+}

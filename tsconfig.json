@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "."
+  },
+  "references": [
+    {
+      "path": "packages/activities/tsconfig.json"
+    },
+    {
+      "path": "packages/workflows/tsconfig.json"
+    },
+    {
+      "path": "packages/worker/tsconfig.json"
+    }
+  ]
+}

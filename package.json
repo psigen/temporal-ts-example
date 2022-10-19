@@ -1,0 +1,20 @@
+{
+  "name": "example",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "@temporalio/activity": "^1.4.3",
+    "@temporalio/client": "^1.4.3",
+    "@temporalio/worker": "^1.4.3",
+    "@temporalio/workflow": "^1.4.3",
+    "nanoid": "^4.0.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/node": "^17.0.35",
+    "parcel": "^2.7.0",
+    "typescript": "4.8.4"
+  }
+}

@@ -1,0 +1,3 @@
+[submodule "temporalite"]
+	path = temporalite
+	url = https://github.com/temporalio/temporalite.git

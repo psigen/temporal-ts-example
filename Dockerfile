@@ -14,21 +14,21 @@ COPY --link . /src/
 FROM builder as workflows-builder
 
 WORKDIR /src/packages/workflows
-RUN yarn install --offline --frozen-lockfile
+RUN yarn install --offline --frozen-lockfile --non-interactive
 RUN --mount=type=cache,target=/src/.parcel-cache yarn build
 
 #----------------------------------------------------------------------------
 FROM builder as worker-builder
 
 WORKDIR /src/packages/worker
-RUN yarn install --offline --frozen-lockfile
+RUN yarn install --offline --frozen-lockfile --non-interactive
 RUN --mount=type=cache,target=/src/.parcel-cache yarn build
 
 #----------------------------------------------------------------------------
 FROM $NODE_IMAGE as worker-runtime
 WORKDIR /app
 
-RUN npm install @temporalio/activity@1.4.3 @temporalio/worker@1.4.3
+RUN yarn add @temporalio/activity@1.4.3 @temporalio/worker@1.4.3
 
 COPY --link --from=worker-builder /src/packages/worker/dist /app/worker
 COPY --link --from=workflows-builder /src/packages/workflows/dist /app/workflows
@@ -39,18 +39,14 @@ CMD [ "./worker/index.js" ]
 FROM builder as client-builder
 
 WORKDIR /src/packages/client
-RUN yarn install --offline --frozen-lockfile
+RUN yarn install --offline --frozen-lockfile --non-interactive
 RUN --mount=type=cache,target=/src/.parcel-cache yarn build
 
 #----------------------------------------------------------------------------
 FROM $NODE_IMAGE as client-runtime
 WORKDIR /app
 
-# I tried using --enable-sourcemap-support in node, and it dumped a lot of
-# extra useless minified code.  So I put this in for CLI calls.
-RUN npm install source-map-support
-
-RUN npm install @temporalio/client@1.4.3
+RUN yarn add @temporalio/client@1.4.3
 
 COPY --link --from=client-builder /src/packages/client/dist /app/client
 

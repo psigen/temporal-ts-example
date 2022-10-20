@@ -1,6 +1,10 @@
 .git
+.gitignore
+.gitmodules
 **/dist
 **/node_modules/
 docker-compose.yml
 Dockerfile
+README.md
+temporalite
 Tiltfile

@@ -12,7 +12,7 @@ FROM $NODE_IMAGE as builder
 # control the installed dependencies.
 WORKDIR /src
 COPY --link yarn.lock package.json /src/
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --non-interactive
 
 #----------------------------------------------------------------------------
 FROM builder as packagejson-cache
@@ -32,7 +32,7 @@ COPY --from=packagejson-cache /src /src
 RUN yarn install --offline --frozen-lockfile --non-interactive
 
 COPY --link . /src
-RUN --mount=type=cache,target=/src/.parcel-cache yarn build
+RUN yarn build
 
 #----------------------------------------------------------------------------
 FROM builder as worker-builder
@@ -48,7 +48,8 @@ RUN --mount=type=cache,target=/src/.parcel-cache yarn build
 FROM $NODE_IMAGE as worker-runtime
 WORKDIR /app
 
-RUN yarn add @temporalio/activity@1.4.3 @temporalio/worker@1.4.3
+RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
+    yarn add @temporalio/activity@1.4.3 @temporalio/worker@1.4.3
 
 COPY --link --from=worker-builder /src/packages/worker/dist /app/worker
 COPY --link --from=workflows-builder /src/packages/workflows/dist /app/workflows
@@ -69,7 +70,8 @@ RUN --mount=type=cache,target=/src/.parcel-cache yarn build
 FROM $NODE_IMAGE as client-runtime
 WORKDIR /app
 
-RUN yarn add @temporalio/client@1.4.3
+RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
+    yarn add @temporalio/client@1.4.3
 
 COPY --link --from=client-builder /src/packages/client/dist /app/client
 

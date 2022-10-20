@@ -9,6 +9,8 @@ In this demo, editing source files in the monorepo will automatically trigger
 live updates of images which should take on the order of a few seconds after
 the environment is initially warmed up.
 
+<img src="https://user-images.githubusercontent.com/2805291/197069196-d8919bc2-bf78-4f36-a157-9096529c52ee.png" width="75%" height="75%">
+
 ## Setup
 
 - Install [tilt](https://docs.tilt.dev/install.html)

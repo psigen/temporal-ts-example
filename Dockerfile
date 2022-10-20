@@ -6,33 +6,32 @@ ARG RUNTIME_IMAGE=gcr.io/distroless/nodejs:18@sha256:12a8f15129f08a8455fc35d3de8
 #----------------------------------------------------------------------------
 FROM $NODE_IMAGE as builder
 
-ARG PNPM_VERSION=7.13.0
+ARG PNPM_VERSION=7.13.6
 RUN npm --no-update-notifier --no-fund --global install "pnpm@${PNPM_VERSION}"
 
 WORKDIR /src
 COPY --link pnpm-lock.yaml package.json /src/
 RUN pnpm fetch
-
 COPY --link . /src/
 
 #----------------------------------------------------------------------------
 FROM builder as workflows-builder
 
-ARG PACKAGE_NAME="workflows"
-RUN pnpm -C "./packages/${PACKAGE_NAME}" install --reporter=append-only
-RUN pnpm -C "./packages/${PACKAGE_NAME}" run build
-RUN pnpm "--filter=@kerfed/${PACKAGE_NAME}" deploy --offline --prod /app
+WORKDIR /src/packages/workflows
+RUN pnpm install --reporter=append-only
+RUN pnpm run build
+RUN pnpm "--filter=@example/workflows" deploy --prod /app
 
 #----------------------------------------------------------------------------
 FROM builder as worker-builder
 
-ARG PACKAGE_NAME="worker"
-RUN pnpm -C "./packages/${PACKAGE_NAME}" install --reporter=append-only
-RUN pnpm -C "./packages/${PACKAGE_NAME}" run build
-RUN pnpm "--filter=@kerfed/${PACKAGE_NAME}" deploy --offline --prod /app
+WORKDIR /src/packages/worker
+RUN pnpm install --reporter=append-only
+RUN pnpm run build
+RUN pnpm "--filter=@example/worker" deploy --prod /app
 
 #----------------------------------------------------------------------------
 FROM $NODE_IMAGE as worker-runtime
 
-COPY --link --from=builder /app /app
+COPY --link --from=worker-builder /app /app
 CMD [ "/app/index.js" ]

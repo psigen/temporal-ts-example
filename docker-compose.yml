@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   temporalite:
-    build: https://github.com/temporalio/temporalite.git#main
+    image: temporalio/temporalite
     ports:
       - 7233:7233
       - 8233:8233
@@ -10,4 +10,4 @@ services:
   worker:
     build:
       context: .
-      target: runtime
+      target: worker-runtime

@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ARG NODE_IMAGE=node:18@sha256:61c3919293bd4031b6e3eb14114afa0ccb19db03addbae056e9d821d0d079a42
 ARG RUNTIME_IMAGE=gcr.io/distroless/nodejs:18@sha256:12a8f15129f08a8455fc35d3de801c1e6def65fb53c72af264b07e73aee761d2
 

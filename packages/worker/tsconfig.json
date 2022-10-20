@@ -2,7 +2,15 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./lib",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "paths": {
+      "@example/activities*": ["../activities/src*"],
+      "@example/workflows*": ["../workflows/src*"]
+    }
   },
+  "references": [
+    { "path": "../activities/tsconfig.json" },
+    { "path": "../workflows/tsconfig.json" },
+  ],
   "include": ["src"]
 }

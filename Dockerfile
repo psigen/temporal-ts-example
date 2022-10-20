@@ -1,37 +1,36 @@
-# syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1@sha256:9ba7531bd80fb0a858632727cf7a112fbfd19b17e94c4e84ced81e24ef1a0dbc
 
 ARG NODE_IMAGE=node:18@sha256:61c3919293bd4031b6e3eb14114afa0ccb19db03addbae056e9d821d0d079a42
-ARG RUNTIME_IMAGE=gcr.io/distroless/nodejs:18@sha256:12a8f15129f08a8455fc35d3de801c1e6def65fb53c72af264b07e73aee761d2
 
 #----------------------------------------------------------------------------
 FROM $NODE_IMAGE as builder
 
-ARG PNPM_VERSION=7.13.6
-RUN npm --no-update-notifier --no-fund --global install "pnpm@${PNPM_VERSION}"
-
 WORKDIR /src
-COPY --link pnpm-lock.yaml package.json /src/
-RUN pnpm fetch
+COPY --link yarn.lock package.json /src/
+RUN yarn install --frozen-lockfile
 COPY --link . /src/
 
 #----------------------------------------------------------------------------
 FROM builder as workflows-builder
 
 WORKDIR /src/packages/workflows
-RUN pnpm install --reporter=append-only
-RUN pnpm run build
-RUN pnpm "--filter=@example/workflows" deploy --prod /app
+RUN yarn install --offline --frozen-lockfile
+RUN yarn build
 
 #----------------------------------------------------------------------------
 FROM builder as worker-builder
 
 WORKDIR /src/packages/worker
-RUN pnpm install --reporter=append-only
-RUN pnpm run build
-RUN pnpm "--filter=@example/worker" deploy --prod /app
+RUN yarn install --offline --frozen-lockfile
+RUN yarn build
 
 #----------------------------------------------------------------------------
 FROM $NODE_IMAGE as worker-runtime
 
-COPY --link --from=worker-builder /app /app
-CMD [ "/app/index.js" ]
+WORKDIR /app
+RUN npm install @temporalio/activity@1.4.3 @temporalio/worker@1.4.3
+
+COPY --link --from=worker-builder /src/packages/worker/dist /app
+COPY --link --from=workflows-builder /src/packages/workflows/dist /app/workflows
+
+CMD [ "./index.js" ]

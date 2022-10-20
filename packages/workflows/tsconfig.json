@@ -4,5 +4,8 @@
     "outDir": "./lib",
     "rootDir": "./src"
   },
-  "include": ["src"]
+  "references": [
+    { "path": "../activities/tsconfig.json" },
+  ],
+  "include": [ "src" ]
 }

@@ -1,0 +1,24 @@
+{
+  "name": "@example/client",
+  "private": true,
+  "version": "0.0.0",
+  "source": "src/index.ts",
+  "scripts": {
+    "build": "parcel build"
+  },
+  "targets": {
+    "default": {
+      "context": "node",
+      "includeNodeModules": {
+        "@temporalio/activity": false,
+        "@temporalio/worker": false,
+        "@temporalio/workflow": false
+      }
+    }
+  },
+  "dependencies": {
+    "@example/workflows": "*",
+    "@temporalio/client": "*",
+    "nanoid": "*"
+  }
+}

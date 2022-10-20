@@ -7,9 +7,7 @@ async function run() {
   const worker = await Worker.create({
     connection,
     workflowBundle: {
-      codePath: "/app/node_modules/@example/workflows/dist/index.js",
-      sourceMapPath:
-        "/app/node_modules/@example/workflows/dist/index.sourcemap.js",
+      codePath: "/app/workflows/index.js",
     },
     activities,
     taskQueue: "example-queue",
@@ -22,6 +20,7 @@ console.log(`Worker -- Starting.`);
 run()
   .catch((err) => {
     console.error(err);
+    process.exit(-1);
   })
   .finally(() => {
     console.log(`Worker -- Exiting.`);

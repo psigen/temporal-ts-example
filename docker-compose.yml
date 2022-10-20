@@ -11,3 +11,9 @@ services:
     build:
       context: .
       target: worker-runtime
+
+  client:
+    build:
+      context: .
+      target: client-runtime
+    entrypoint: [ "sleep", "infinity" ]

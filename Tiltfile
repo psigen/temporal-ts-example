@@ -12,7 +12,7 @@ docker_build("temporalio/temporalite", "./temporalite")
 
 cmd_button(
     "client:submit",
-    argv = ["docker-compose", "exec", "client", "node", "-r", "source-map-support/register", "./index.js"],
+    argv = ["docker-compose", "exec", "client", "node", "-r", "source-map-support/register", "./client/index.js"],
     resource = "client",
     icon_name = "cloud_download",
     text = "Submit Job",

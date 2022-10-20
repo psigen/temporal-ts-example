@@ -11,6 +11,7 @@
       "context": "node",
       "includeNodeModules": {
         "@temporalio/activity": false,
+        "@temporalio/client": false,
         "@temporalio/worker": false,
         "@temporalio/workflow": false
       }

@@ -8,16 +8,13 @@ async function run() {
   const client = new WorkflowClient({ connection });
 
   const handle = await client.start<typeof workflows.example>("example", {
-    // type inference works! args: [name: string]
     args: ["Temporal"],
     taskQueue: "hello-world",
-    // in practice, use a meaningful business id, eg customerId or transactionId
     workflowId: "workflow-" + nanoid(),
   });
   console.log(`Started workflow ${handle.workflowId}`);
 
-  // optional: wait for client result
-  console.log(await handle.result()); // Hello, Temporal!
+  console.log(await handle.result());
 }
 
 run().catch((err) => {

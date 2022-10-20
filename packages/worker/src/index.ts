@@ -10,7 +10,7 @@ async function run() {
       codePath: "/app/workflows/index.js",
     },
     activities,
-    taskQueue: "example-queue",
+    taskQueue: "hello-world",
   });
 
   await worker.run();

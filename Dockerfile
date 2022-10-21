@@ -66,11 +66,15 @@ WORKDIR /app
 
 # Since temporal can't be embedded inside the bundle, we separately install
 # it into the node_modules and then mount it to the runtime image.
+#
+# We then manually remove @swc/core because we are not bundling at runtime.
 RUN --mount=type=cache,target=/usr/local/share/.cache/yarn \
     yarn add \
-    @temporalio/activity@1.4.3 \
-    @temporalio/worker@1.4.3 \
-    @temporalio/client@1.4.3
+        @temporalio/activity@1.4.3 \
+        @temporalio/client@1.4.3 \
+        @temporalio/worker@1.4.3 \
+        @temporalio/workflow@1.4.3 && \
+    rm -rf ./node_modules/@swc
 
 #----------------------------------------------------------------------------
 FROM $RUNTIME_IMAGE as worker-runtime

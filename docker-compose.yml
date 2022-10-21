@@ -4,7 +4,6 @@ services:
   temporalite:
     image: temporalio/temporalite
     ports:
-      - 7233:7233
       - 8233:8233
 
   worker:
@@ -16,4 +15,4 @@ services:
     build:
       context: .
       target: client-runtime
-    entrypoint: [ "sleep", "infinity" ]
+    entrypoint: ["sleep", "infinity"]

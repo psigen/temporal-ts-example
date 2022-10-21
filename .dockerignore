@@ -1,6 +1,7 @@
 .git
 .gitignore
 .gitmodules
+.parcel-cache
 **/dist
 **/node_modules/
 docker-compose.yml

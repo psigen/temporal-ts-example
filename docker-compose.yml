@@ -10,9 +10,12 @@ services:
     build:
       context: .
       target: worker-runtime
+    depends_on:
+      - temporalite
 
   client:
     build:
       context: .
       target: client-runtime
-    entrypoint: ["sleep", "infinity"]
+    depends_on:
+      - temporalite
